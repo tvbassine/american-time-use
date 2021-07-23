@@ -62,7 +62,7 @@ y$bar = if_else(y$delta > 0, 'red', 'blue')
 
 p = ggplot(y, aes(x=Activity_factor, y = delta_minutes))+
   geom_bar(stat="identity", width=0.7, fill=y$bar, alpha = .7)+
-  ylab('Change in Minutes, 2020 - 2019') +
+  ylab('Change in Avg. Minutes Per Day, 2020 - 2019') +
   xlab('Activity') +
   coord_flip() + 
   theme_minimal() +
