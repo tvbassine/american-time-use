@@ -9,6 +9,15 @@ x = read.csv('https://raw.githubusercontent.com/tvbassine/american-time-use/mast
              stringsAsFactors = F)
 head(x)
 summary(x)
+# Code if category is primary or secondary:
+x$primary <- c(0, 1, 0, 0,
+               1, 1, 0, 0,
+               0, 0, 1, 0,
+               0, 1, 0, 1, 0,
+               1, 0, 1, 0,
+               0, 1, 0, 0,
+               1, 0, 0, 0,
+               1, 1, 1)
 
 # How much did more time did Americans spend in activities in 2020?
 x$delta = x$hours_2020 - x$hours_2019
@@ -39,8 +48,8 @@ View(x[order(x$delta, decreasing = T),])
 # Let's make a nice plot of the change in time spent on activities:
 library(ggplot2)
 
-# Remove "Total, all activities(1)" and "Working" for the purposes of plotting deltas:
-y = x[!(x$Activity %in% c('Total, all activities(1)', 'Working')), ]
+# Only consider primary activities:
+y = x[x$primary == 1,]
 y$Activity[y$Activity == 'Sleeping(2)'] = 'Sleeping'
 y = y[order(y$delta_minutes, decreasing = F),]
 # Make activity a factor. The levels here preserve the ordering so the plot goes from biggest
@@ -61,7 +70,8 @@ p = ggplot(y, aes(x=Activity_factor, y = delta_minutes))+
         plot.subtitle = element_text(size = 14, face = "bold", family = 'Times', hjust = .5),
         axis.title.x = element_text( size=14),
         axis.title.y = element_text(size=14),
-        axis.text.x = element_text( size = 12)) +
+        axis.text.x = element_text( size = 12),
+        axis.text.y = element_text( size = 12)) +
   ggtitle("Change In How Americans Spent Their Time, 2020 vs. 2019",
           subtitle = "Source: U.S. Bureau of Labor Statistics (BLS)")
 
@@ -73,7 +83,3 @@ x$pct_who_did_delta = x$pct_did_act_2020 - x$pct_did_act_2019
 View(x)
 # More people did sports or recreation (3.4%) and lawn and garden care.
 # Less people travelled (17%!) and socialized/communicated (8%)
-
-# Further work: I realize I am including categories (like "Personal care activities") 
-# with subcategories under that category (like "sleeping"). 
-# Should probably just do analysis on the subcategories so as not to double count.
