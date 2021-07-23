@@ -73,3 +73,7 @@ x$pct_who_did_delta = x$pct_did_act_2020 - x$pct_did_act_2019
 View(x)
 # More people did sports or recreation (3.4%) and lawn and garden care.
 # Less people travelled (17%!) and socialized/communicated (8%)
+
+# Further work: I realize I am including categories (like "Personal care activities") 
+# with subcategories under that category (like "sleeping"). 
+# Should probably just do analysis on the subcategories so as not to double count.
